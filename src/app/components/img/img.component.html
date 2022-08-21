@@ -1,0 +1,13 @@
+<h1>Componente <i>img</i></h1>
+<img *ngIf="img; else elseImage" [src]="img"
+  alt="Image element" width="100"
+  (load)="imgLoaded()" (error)="imgError()"
+/>
+<ng-template #elseImage>
+  <img [src]="imageDefault" alt="Image placeholder" width="100">
+</ng-template>
+
+
+
+
+

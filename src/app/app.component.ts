@@ -5,6 +5,15 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
-  title = 'my-store';
+  imgParent = '';
+
+  onLoaded(img: string) {
+    console.log("PADRE: Imagen cargada con éxito.", img)
+  };
 }
+
+
+
+
