@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-img',
@@ -6,18 +6,30 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./img.component.scss']
 })
 
-export class ImgComponent implements OnInit {
+export class ImgComponent implements OnInit, OnChanges {
 
-  @Input() img: string = '';
+  img: string = '';
+  @Input('img')
+  set changeImg(newImg: string) {
+    this.img = newImg;
+    // Código a ejecutar adicional solo cuando cambia img
+    console.log('Ha cambiado img');
+  }
+  @Input() alt:string = '';
+
   @Output() loaded = new EventEmitter<string>();
-  imageDefault: string = './assets/img/placeholder.jpg';
+  imageDefault: string = './assets/images/placeholder.jpg'
 
   constructor() { }
 
   ngOnInit(): void {}
 
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+  }
+
   imgLoaded() {
-    console.log("HIJO: Imagen cargada con éxito.")
+    console.log("HIJO: Imagen cargada con éxito.");
     this.loaded.emit(this.img);
   }
 
@@ -25,5 +37,3 @@ export class ImgComponent implements OnInit {
     this.img = this.imageDefault;
   }
 }
-
-
