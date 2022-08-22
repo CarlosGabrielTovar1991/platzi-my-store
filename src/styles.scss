@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('./styles/reset.scss');
+
+body {
+  font-family: 'Quicksand', serif;
+}
+
+.products--grid {
+  app-img {
+    img {
+      border-radius: 10px;
+      border: 1px solid lightgray;
+    }
+  }
+}

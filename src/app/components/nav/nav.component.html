@@ -1,0 +1,45 @@
+<div class="show-mobile">
+  <div>
+    <button (click)="toggleMenu()">
+      <img src="./assets/images/svg/icon_menu.svg" alt="Menu">
+    </button>
+    <a href="">
+      <img src="./assets/images/svg/logo_yard_sale.svg" alt="Shop logo">
+    </a>
+    <a href="">
+      <img src="./assets/images/svg/icon_shopping_cart.svg" alt="cart">
+    </a>
+  </div>
+  <div class="side-menu" [class.active]="activeMenu">
+    <button (click)="toggleMenu()">Close</button>
+    <ul>
+      <li><a href="">All</a></li>
+      <li><a href="">Clothes</a></li>
+      <li><a href="">Electronics</a></li>
+      <li><a href="">Toys</a></li>
+    </ul>
+  </div>
+</div>
+<div class="hide-mobile">
+  <div>
+    <nav>
+      <a class="logo" href="">
+        <img src="./assets/images/svg/logo_yard_sale.svg" alt="Shop logo">
+      </a>
+      <ul>
+        <li><a href="">All</a></li>
+        <li><a href="">Clothes</a></li>
+        <li><a href="">Electronics</a></li>
+        <li><a href="">Toys</a></li>
+      </ul>
+    </nav>
+    <div class="info">
+      <div class="account">carlos@carlos.com</div>
+      <div>
+        <a href="">
+          <img src="./assets/images/svg/icon_shopping_cart.svg" alt="cart">
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
