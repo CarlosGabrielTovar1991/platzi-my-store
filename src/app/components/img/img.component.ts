@@ -6,17 +6,14 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
   styleUrls: ['./img.component.scss']
 })
 
-export class ImgComponent implements OnInit, OnChanges {
+export class ImgComponent implements OnInit {
 
   img: string = '';
   @Input('img')
   set changeImg(newImg: string) {
     this.img = newImg;
-    // Código a ejecutar adicional solo cuando cambia img
-    console.log('Ha cambiado img');
   }
   @Input() alt:string = '';
-
   @Output() loaded = new EventEmitter<string>();
   imageDefault: string = './assets/images/placeholder.jpg'
 
@@ -24,12 +21,10 @@ export class ImgComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-  }
+  // ngOnChanges(changes: SimpleChanges) {
+  // }
 
   imgLoaded() {
-    console.log("HIJO: Imagen cargada con éxito.");
     this.loaded.emit(this.img);
   }
 
