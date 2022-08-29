@@ -6,9 +6,10 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
   styleUrls: ['./img.component.scss']
 })
 
-export class ImgComponent implements OnInit {
+export class ImgComponent {
 
   img: string = '';
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('img')
   set changeImg(newImg: string) {
     this.img = newImg;
@@ -18,8 +19,6 @@ export class ImgComponent implements OnInit {
   imageDefault: string = './assets/images/placeholder.jpg'
 
   constructor() { }
-
-  ngOnInit(): void {}
 
   // ngOnChanges(changes: SimpleChanges) {
   // }
