@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CreateProductDTO, Product } from '../models/product.model';
+import { CreateProductDTO, UpdateProductDTO, Product } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +13,20 @@ export class ProductsService {
     private http: HttpClient,
   ) { }
 
-  getAll() {
-    return this.http.get<Product[]>(this.API_URL);
+  getAll(limit?: number, offset?: number) {
+    let params = new HttpParams();
+    if (limit !== undefined && limit >= 0 && offset !== undefined && offset >= 0) {
+      params = params.set('limit', limit);
+      params = params.set('offset', offset);
+    }
+    return this.http.get<Product[]>(this.API_URL, {params});
   }
+
+  // getByPage(limit: number, offset: number) {
+  //   return this.http.get<Product[]>(`${this.API_URL}`, {
+  //     params: {limit, offset}
+  //   });
+  // }
 
   get (id: string) {
     return this.http.get<Product>(`${this.API_URL}/${id}`);
@@ -23,6 +34,14 @@ export class ProductsService {
 
   create (data: CreateProductDTO) {
     return this.http.post<Product>(`${this.API_URL}`, data);
+  }
+
+  update( id: string, data: UpdateProductDTO) {
+    return this.http.put<Product>(`${this.API_URL}/${id}`, data);
+  }
+
+  delete (id: string) {
+    return this.http.delete<boolean>(`${this.API_URL}/${id}`);
   }
 }
 

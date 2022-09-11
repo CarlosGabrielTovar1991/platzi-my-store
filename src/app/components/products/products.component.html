@@ -7,13 +7,16 @@
     (showDetails)="onShowDetails($event)"
   ></app-product>
 </div>
+<button type="button" (click)="loadMore()">LOAD MORE</button>
 <div class="product-detail" *ngIf="productChosen" [class.active]="showProductDetail">
   <button type="button" (click)="toggleProductDetail()">Close</button>
   <h1>{{productChosen.title}}</h1>
-  <p>{{productChosen.description}}</p>
   <swiper class="my-swiper">
     <ng-template swiperSlide class="my-swiper-slide" *ngFor="let image of productChosen.images; index as i">
       <img class="my-swiper-slide-image" [src]="image" alt="{{productChosen.title + ' image #' + i}}">
     </ng-template>
   </swiper>
+  <p>{{productChosen.description}}</p>
+  <button type="button" (click)="editCurrentProduct()">Editar</button>
+  <button type="button" (click)="deleteCurrentProduct()">Eliminar</button>
 </div>
