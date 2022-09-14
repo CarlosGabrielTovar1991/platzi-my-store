@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreateProductDTO, UpdateProductDTO, Product } from '../models/product.model';
 
+import { retry } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,7 +31,8 @@ export class ProductsService {
   // }
 
   get (id: string) {
-    return this.http.get<Product>(`${this.API_URL}/${id}`);
+    return this.http.get<Product>(`${this.API_URL}/${id}`)
+    .pipe(retry(5));
   }
 
   create (data: CreateProductDTO) {
