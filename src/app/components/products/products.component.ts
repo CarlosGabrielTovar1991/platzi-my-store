@@ -3,6 +3,8 @@ import { CreateProductDTO, Product, UpdateProductDTO } from '../../models/produc
 
 import { StoreService } from 'src/app/services/store.service';
 import { ProductsService } from 'src/app/services/products.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { switchMap, zip } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -15,14 +17,6 @@ export class ProductsComponent implements OnInit {
   myShoppingCart: Product[] = [];
   total: number = 0;
   showProductDetail: boolean = false;
-  productChosen: Product = {
-    id: '',
-    title: '',
-    price: 0,
-    images: [],
-    description: '',
-    category: { id: 0, name:''},
-  };
   productTemplate: Product = {
     id: '',
     title: '',
@@ -31,6 +25,10 @@ export class ProductsComponent implements OnInit {
     description: '',
     category: { id: 0, name:''},
   };
+
+  productChosen: Product = { ...this.productTemplate };
+
+  statusDetails: 'init' | 'loading' | 'success' | 'error' = 'init';
 
   limit = 10;
   offset = 0;
@@ -65,11 +63,42 @@ export class ProductsComponent implements OnInit {
       });
   }
 
-  onShowDetails(id: string) {
-    this.productsService.get(id)
-    .subscribe(data => {
-      this.productChosen = data;
-      this.showProductDetail = true;
+  onShowDetails(id: string, wrong?: boolean) {
+    this.statusDetails = 'loading';
+    this.productsService.get(wrong ? '1234567890' : id)
+    .subscribe({
+      next: (data) => {
+        this.statusDetails = 'success';
+        this.productChosen = data; },
+      error: (error: HttpErrorResponse) => {
+        this.statusDetails = 'error';
+        console.log(error); }
+    });
+  }
+
+  readAndUpdate(id: string) {
+    // Using switchMap
+
+    // this.productsService.get(id)
+    // .pipe(
+    //   switchMap(
+    //     (product) => this.productsService.update(product.id, {title: "Read and update Change"})
+    //   ),
+    //   switchMap(
+    //     (product) => this.productsService.update(product.id, {title: "Another update Change"})
+    //   )
+    // );
+
+    // Using zip
+
+    zip(
+      this.productsService.get(id),
+      this.productsService.update(id, {title: "An update Change"})
+    ).subscribe(response => {
+      const readResponse = response[0];
+      const updateResponse = response[1];
+      console.log(readResponse);
+      console.log(updateResponse);
     });
   }
 

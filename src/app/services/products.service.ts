@@ -1,15 +1,17 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreateProductDTO, UpdateProductDTO, Product } from '../models/product.model';
 
-import { retry } from 'rxjs';
+import { catchError, retry, throwError, map } from 'rxjs';
+
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ProductsService {
-  private API_URL = 'https://young-sands-07814.herokuapp.com/api/products';
+  private API_URL = `${environment.API_URL}/api/products`;
 
   constructor(
     private http: HttpClient,
@@ -21,7 +23,16 @@ export class ProductsService {
       params = params.set('limit', limit);
       params = params.set('offset', offset);
     }
-    return this.http.get<Product[]>(this.API_URL, {params});
+    return this.http.get<Product[]>(this.API_URL, {params})
+    .pipe(
+      retry(1),
+      map(products => products.map(currentProduct => {
+        return {
+          ...currentProduct,
+          taxes: .19 * currentProduct.price
+        }
+      }))
+    );
   }
 
   // getByPage(limit: number, offset: number) {
@@ -32,7 +43,18 @@ export class ProductsService {
 
   get (id: string) {
     return this.http.get<Product>(`${this.API_URL}/${id}`)
-    .pipe(retry(5));
+    .pipe(catchError((error: HttpErrorResponse) => {
+      if (error.status === HttpStatusCode.InternalServerError) {
+        return throwError(() => ("Ups! Error del server."))
+      }
+      if (error.status === HttpStatusCode.NotFound) {
+        return throwError(() => ("Ups! Nada se encontró."))
+      }
+      if (error.status === HttpStatusCode.Unauthorized) {
+        return throwError(() => ("Ups! No tienes permisos."))
+      }
+      return throwError(() => ("Ups! Hay un problema."))
+    }));
   }
 
   create (data: CreateProductDTO) {
