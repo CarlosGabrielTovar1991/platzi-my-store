@@ -34,7 +34,10 @@
       </ul>
     </nav>
     <div class="info">
-      <div class="account">carlos@carlos.com</div>
+      <div *ngIf="profile?.email; else elseProfile" class="account">{{profile?.email}}</div>
+      <ng-template #elseProfile>
+        <button (click)="login()" [disabled]="isLoggingIn">Iniciar sesión</button>
+      </ng-template>
       <div class="cart">
         <a href="">
           <img src="./assets/images/svg/icon_shopping_cart.svg" alt="cart">
