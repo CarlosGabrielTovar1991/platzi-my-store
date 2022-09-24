@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 import { Product } from '../../models/product.model';
 import { User } from 'src/app/models/user.model';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-nav',
@@ -35,10 +36,13 @@ export class NavComponent implements OnInit {
   login() {
     this.isLoggingIn = true;
     this.authService.login("gabriel@email.com", "pippo123")
-    .subscribe((response) => {
-      this.isLoggingIn = false;
-      this.profile = response;
-    })
+    .pipe(
+      finalize(() => { this.isLoggingIn = false; })
+    )
+    .subscribe({
+      next: (response) => { this.profile = response; },
+
+    });
   }
 
   getProfile() {
