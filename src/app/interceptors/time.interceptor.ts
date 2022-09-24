@@ -12,9 +12,7 @@ import { tap } from 'rxjs/operators';
 
 const CHECK_TIME = new HttpContextToken<boolean>(()=> false);
 
-export function checkTime() {
-  return new HttpContext().set(CHECK_TIME, true);
-}
+export const checkTime = () => (new HttpContext().set(CHECK_TIME, true));
 
 @Injectable()
 export class TimeInterceptor implements HttpInterceptor {

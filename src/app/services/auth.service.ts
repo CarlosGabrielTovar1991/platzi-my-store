@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { switchMap, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { addToken } from '../interceptors/token.interceptor';
 import { Auth } from '../models/auth.model';
 import { User } from '../models/user.model';
 import { TokenService } from './token.service';
@@ -19,7 +20,9 @@ export class AuthService {
   ) { }
 
   login(email:string, password:string) {
-    return this.http.post<Auth>(`${this.apiUrl}/login`, {email, password})
+    return this.http.post<Auth>(`${this.apiUrl}/login`, {email, password}, {
+      context: addToken()
+    })
     .pipe(
       tap(response => this.tokenService.saveToken(response.access_token)),
       switchMap(() => this.profile()),
