@@ -1,5 +1,15 @@
 <app-nav></app-nav>
 <button (click)="createUser()">Crear mi usuario</button>
+<div>
+  <hr>
+  <p>
+    <a href="../assets/files/dummy-doc.pdf" download>Descarga local</a>
+  </p>
+  <button (click)="downloadPdf()">Descarga remota</button>
+  <input type="file" (change)="onUpload($event)">
+  <img *ngIf="imgRta" [src]="imgRta" alt="">
+  <hr>
+</div>
 <app-products></app-products>
 <!-- <h1>Componente <i>app</i> (Padre)</h1>
 <p><input type="text" [(ngModel)]="imgParent" /></p>
