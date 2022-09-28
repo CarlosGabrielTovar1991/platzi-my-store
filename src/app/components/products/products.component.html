@@ -8,7 +8,7 @@
     (showDetails)="onShowDetails($event)"
   ></app-product>
 </div>
-<button type="button" (click)="loadMore()">LOAD MORE</button>
+<button type="button" (click)="loadMoreClick()">LOAD MORE</button>
 <div class="product-detail" *ngIf="productChosen" [class.active]="showProductDetail">
   <button type="button" (click)="toggleProductDetail()">Close</button>
   <h1>{{productChosen.title}}</h1>
