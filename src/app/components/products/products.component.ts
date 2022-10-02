@@ -47,6 +47,7 @@ export class ProductsComponent {
   }
 
   onShowDetails(id: string, wrong?: boolean) {
+    debugger
     this.statusDetails = 'loading';
     this.productsService.get(wrong ? '1234567890' : id)
     .subscribe({
