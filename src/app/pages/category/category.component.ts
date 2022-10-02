@@ -14,6 +14,7 @@ export class CategoryComponent implements OnInit {
   limit = 10;
   offset = 0;
   categoryId: string | null = null;
+  productId: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,6 +24,9 @@ export class CategoryComponent implements OnInit {
   // Resolviendo un callback hell
 
   ngOnInit(): void {
+    this.route.queryParamMap.subscribe(params => {
+      this.productId = params.get('product');
+    })
     this.route.paramMap.pipe(
       switchMap(params => {
         this.categoryId = params.get('id');

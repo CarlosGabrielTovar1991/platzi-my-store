@@ -13,6 +13,14 @@ import { switchMap, zip } from 'rxjs';
 })
 export class ProductsComponent {
   @Output() loadMore = new EventEmitter();
+
+  // @Input() productId: string | null = null;
+  @Input() set productId(id: string | null) {
+    if (id) {
+      this.onShowDetails(id);
+    }
+  }
+
   @Input() products: Product[] = [];
   myShoppingCart: Product[] = [];
   total: number = 0;
@@ -47,13 +55,17 @@ export class ProductsComponent {
   }
 
   onShowDetails(id: string, wrong?: boolean) {
-    debugger
     this.statusDetails = 'loading';
+    if (id && !this.showProductDetail) {
+      this.showProductDetail = true;
+    }
     this.productsService.get(wrong ? '1234567890' : id)
     .subscribe({
       next: (data) => {
         this.statusDetails = 'success';
-        this.productChosen = data; },
+        this.productChosen = data;
+        this.showProductDetail = true;
+      },
       error: (error: HttpErrorResponse) => {
         this.statusDetails = 'error';
         console.log(error); }
