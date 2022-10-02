@@ -23,7 +23,7 @@ export class ProductsComponent {
     price: 0,
     images: [],
     description: '',
-    category: { id: 0, name:''},
+    category: { id: '0', name:''},
   };
 
   productChosen: Product = { ...this.productTemplate };
